@@ -1,0 +1,162 @@
+{
+  "entities": [
+    {
+      "name": "Usuario",
+      "properties": [
+        { "name": "Id", "type": "long", "nullable": false },
+        { "name": "NombreUsuario", "type": "string", "nullable": false },
+        { "name": "Correo", "type": "string", "nullable": false },
+        { "name": "Telefono", "type": "string", "nullable": false },
+        { "name": "Apodo", "type": "string", "nullable": false },
+        { "name": "Contraseña", "type": "string", "nullable": false }
+      ],
+      "relationships": [
+        { "name": "Reportes", "targetEntity": "Reporte", "type": "one-to-many", "nullable": true },
+        { "name": "Soportes", "targetEntity": "Soporte", "type": "one-to-many", "nullable": true },
+        { "name": "Pedidos", "targetEntity": "Pedido", "type": "one-to-many", "nullable": true },
+        { "name": "Transacciones", "targetEntity": "Transaccion", "type": "one-to-many", "nullable": true },
+        { "name": "Videojuegos", "targetEntity": "Videojuego", "type": "many-to-many", "nullable": true },
+        { "name": "Insignias", "targetEntity": "Insignia", "type": "one-to-many", "nullable": true }
+      ]
+    },
+    {
+      "name": "Vendedor",
+      "inheritsFrom": "Usuario",
+      "properties": [],
+      "relationships": [
+        { "name": "VideojuegosPublicados", "targetEntity": "Videojuego", "type": "many-to-many", "nullable": true }
+      ]
+    },
+    {
+      "name": "Moderador",
+      "properties": [
+        { "name": "Id", "type": "long", "nullable": false },
+        { "name": "Correo", "type": "string", "nullable": false },
+        { "name": "Contraseña", "type": "string", "nullable": false }
+      ],
+      "relationships": [
+        { "name": "Soportes", "targetEntity": "Soporte", "type": "many-to-many", "nullable": true },
+        { "name": "Reportes", "targetEntity": "Reporte", "type": "many-to-many", "nullable": true }
+      ]
+    },
+    {
+      "name": "Reporte",
+      "properties": [
+        { "name": "Id", "type": "long", "nullable": false },
+        { "name": "UsuarioReportado", "type": "string", "nullable": false },
+        { "name": "Motivo", "type": "string", "nullable": false },
+        { "name": "Fecha", "type": "date-time", "nullable": false },
+        { "name": "Estado", "type": "EstadoReporte", "nullable": false }
+      ],
+      "relationships": [
+        { "name": "Usuario", "targetEntity": "Usuario", "type": "many-to-one", "nullable": true },
+        { "name": "Moderadores", "targetEntity": "Moderador", "type": "many-to-many", "nullable": true }
+      ]
+    },
+    {
+      "name": "Soporte",
+      "properties": [
+        { "name": "Id", "type": "long", "nullable": false },
+        { "name": "Descripcion", "type": "string", "nullable": false },
+        { "name": "Estado", "type": "EstadoSoporte", "nullable": false }
+      ],
+      "relationships": [
+        { "name": "Usuario", "targetEntity": "Usuario", "type": "many-to-one", "nullable": true },
+        { "name": "Moderadores", "targetEntity": "Moderador", "type": "many-to-many", "nullable": true }
+      ]
+    },
+    {
+      "name": "Videojuego",
+      "properties": [
+        { "name": "Id", "type": "long", "nullable": false },
+        { "name": "Precio", "type": "float", "nullable": false }
+      ],
+      "relationships": [
+        { "name": "Categoria", "targetEntity": "Categoria", "type": "many-to-one", "nullable": true },
+        { "name": "Usuarios", "targetEntity": "Usuario", "type": "many-to-many", "nullable": true },
+        { "name": "Vendedores", "targetEntity": "Vendedor", "type": "many-to-many", "nullable": true },
+        { "name": "Pedidos", "targetEntity": "Pedido", "type": "many-to-many", "nullable": true },
+        { "name": "Desafios", "targetEntity": "Desafio", "type": "many-to-many", "nullable": true }
+      ]
+    },
+    {
+      "name": "Categoria",
+      "properties": [
+        { "name": "Id", "type": "long", "nullable": false },
+        { "name": "Nombre", "type": "string", "nullable": false },
+        { "name": "Descripcion", "type": "string", "nullable": false }
+      ],
+      "relationships": [
+        { "name": "Videojuegos", "targetEntity": "Videojuego", "type": "one-to-many", "nullable": true }
+      ]
+    },
+    {
+      "name": "Pedido",
+      "properties": [
+        { "name": "Id", "type": "long", "nullable": false },
+        { "name": "Total", "type": "decimal", "nullable": false }
+      ],
+      "relationships": [
+        { "name": "Usuario", "targetEntity": "Usuario", "type": "many-to-one", "nullable": false },
+        { "name": "Videojuegos", "targetEntity": "Videojuego", "type": "many-to-many", "nullable": false },
+        { "name": "Transaccion", "targetEntity": "Transaccion", "type": "one-to-one", "nullable": true }
+      ]
+    },
+    {
+      "name": "Transaccion",
+      "properties": [
+        { "name": "Id", "type": "long", "nullable": false },
+        { "name": "Fecha", "type": "date-time", "nullable": false },
+        { "name": "Total", "type": "decimal", "nullable": false },
+        { "name": "MetodoPago", "type": "string", "nullable": false },
+        { "name": "TipoOperacion", "type": "TipoOperacion", "nullable": false }
+      ],
+      "relationships": [
+        { "name": "Usuario", "targetEntity": "Usuario", "type": "many-to-one", "nullable": false },
+        { "name": "Pedido", "targetEntity": "Pedido", "type": "one-to-one", "nullable": true }
+      ]
+    },
+    {
+      "name": "Insignia",
+      "properties": [
+        { "name": "Id", "type": "long", "nullable": false },
+        { "name": "Perfil", "type": "TipoInsignia", "nullable": false },
+        { "name": "RutaDelImg", "type": "string", "nullable": false }
+      ],
+      "relationships": [
+        { "name": "Usuario", "targetEntity": "Usuario", "type": "many-to-one", "nullable": true },
+        { "name": "Desafios", "targetEntity": "Desafio", "type": "many-to-many", "nullable": true }
+      ]
+    },
+    {
+      "name": "Desafio",
+      "properties": [
+        { "name": "Id", "type": "long", "nullable": false },
+        { "name": "Nombre", "type": "string", "nullable": false },
+        { "name": "Descripcion", "type": "string", "nullable": false }
+      ],
+      "relationships": [
+        { "name": "Videojuegos", "targetEntity": "Videojuego", "type": "many-to-many", "nullable": true },
+        { "name": "Insignias", "targetEntity": "Insignia", "type": "many-to-many", "nullable": true }
+      ]
+    }
+  ],
+  "enums": [
+    {
+      "name": "EstadoReporte",
+      "values": ["SinSolucionar", "Solucionado"]
+    },
+    {
+      "name": "EstadoSoporte",
+      "values": ["SinSolucionar", "Solucionado"]
+    },
+    {
+      "name": "TipoInsignia",
+      "values": ["Perfil", "Marco", "Fondo", "Icono"]
+    },
+    {
+      "name": "TipoOperacion",
+      "values": ["Cobro", "Pago"]
+    }
+  ]
+}

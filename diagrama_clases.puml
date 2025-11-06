@@ -1,0 +1,195 @@
+@startuml DiagramaClasesVideojuegos
+
+!theme plain
+skinparam classAttributeIconSize 0
+
+class EstadoReporte {
+    + SinSolucionar : 1
+    + Solucionado : 2
+}
+
+class Reporte {
+    # id : Long
+    # usuarioReportado : String
+    # motivo : String
+    # fecha : Date
+    # estado : EstadoReporte
+    --
+    + nuevoReporte()
+    + modificarReporte()
+    + eliminarReportePorID()
+    + obtenerReportePorID()
+    + obtenerReportes()
+    + enviarReporte()
+}
+
+class EstadoSoporte {
+    + SinSolucionar : 1
+    + Solucionado : 2
+}
+
+class Soporte {
+    # id : Long
+    # descripcion : String
+    # estado : EstadoSoporte
+    --
+    + obtenerSoportes()
+    + eliminarSoporte()
+    + obtenerSoportePorID()
+    + enviarSolicitud()
+    + nuevoSoporte()
+}
+
+class Moderador {
+    # id : Long
+    # correo : String
+    # contraseña : Password
+    --
+    + gestionarSoporte()
+    + gestionarReportes()
+    + revisarContenido()
+    + nuevoModerador()
+}
+
+class Usuario {
+    # id : Long
+    # nombreUsuario : String
+    # correo : String
+    # telefono : String
+    # apodo : String
+    # contraseña : Password
+    --
+    + registrar()
+    + editarUsuario()
+    + eliminarUsuario()
+    + reportarUsuario()
+    + enviarSoporte()
+    + filtrarProductosPrecio()
+    + cerrarSesion()
+    + accederInfAccionVideojuego()
+    + comprarVideojuegos()
+    + verDetallesCuenta()
+    + obtenerUsuarioPorID()
+    + obtenerTodosUsuarios()
+    + iniciarSesion()
+    + ObtenerUsuariosPorInsignia()
+}
+
+class Vendedor {
+    + publicarVideojuego()
+    + gestionarInventario()
+    + nuevo()
+}
+
+class Insignia {
+    # id : Long
+    # perfil : TipoInsignia
+    # rutaDelImg : String
+    --
+    + nuevaInsignia()
+    + obtenerInsigniaPorID()
+    + obtenerTodasInsignias()
+    + crearImagen()
+}
+
+class TipoInsignia {
+    + Perfil : 1
+    + Marco : 2
+    + Fondo : 3
+    + Icono : 4
+}
+
+class Desafio {
+    # id : Long
+    # nombre : String
+    # descripcion : String
+    --
+    + crearDesafio()
+    + eliminarDesafio()
+    + obtenerDesafioPorID()
+    + obtenerTodosDesafios()
+    + verificarCompletado()
+    + obtenerDesafioPorVideojuego()
+}
+
+class Pedido {
+    # id : Long
+    # total : Float
+    --
+    + calcularTotal()
+    + eliminarPedido()
+    + actualizarProducto()
+    + agregarProducto()
+    + nuevoPedido()
+    + obtenerProductoPorID()
+    + obtenerTodosPedidos()
+}
+
+class TipoOperacion {
+    + Cobro : 1
+    + Pago : 2
+}
+
+class Transaccion {
+    # id : Long
+    # fecha : Date
+    # total : Double
+    # metodoPago : String
+    # tipoOperacion : TipoOperacion
+    --
+    + nuevaTransaccion()
+    + editarTransaccionPorID()
+    + eliminarTransaccionPorID()
+    + obtenerTransaccionPorID()
+    + obtenerTodasTransacciones()
+    + validarPago()
+    + confirmarCompra()
+}
+
+class Videojuego {
+    # id : Long
+    # precio : Float
+    --
+    + nuevoVideojuego()
+    + editarVideojuegoPorID()
+    + eliminarVideojuegoPorID()
+    + obtenerVideojuegoPorID()
+    + obtenerTodosVideojuegos()
+    + mostrarDetalle()
+    + publicarVideojuego()
+}
+
+class Categoria {
+    # id : Long
+    # nombre : String
+    # descripcion : String
+    --
+    + nuevaCategoria()
+    + modificarCategoriaPorID()
+    + eliminarCategoriaPorID()
+    + actualizarCategoriaPorID()
+    + obtenerTodasCategorias()
+    + obtenerVideojuegoPorNombre()
+}
+
+EstadoReporte "0..*" -- "0..*" Reporte : reporte
+Moderador "0..*" -- "0..*" Reporte : reporte
+Usuario "0..1" -- "0..*" Reporte : usuario
+EstadoSoporte "0..*" -- "0..*" Soporte : soporte
+Moderador "0..*" -- "0..*" Soporte : soporte
+Usuario "0..1" -- "0..*" Soporte : usuario
+Usuario <|-- Vendedor
+Insignia "0..*" -- "0..1" Usuario : insignia
+TipoInsignia "0..*" -- "0..*" Insignia : insignia
+Desafio "0..*" -- "0..*" Insignia : desafio
+Usuario "1..1" -- "0..*" Pedido : usuario
+Pedido "1..*" -- "0..*" Videojuego : videojuego
+Transaccion "1..1" -- "0..1" Pedido : pedido
+TipoOperacion "0..*" -- "0..*" Transaccion : transaccion
+Usuario "1" -- "0..*" Transaccion : usuario
+Vendedor "0..*" -- "0..*" Videojuego : videojuego
+Usuario "0..*" -- "0..*" Videojuego : videojuego
+Desafio "0..*" -- "0..*" Videojuego : videojuego
+Categoria "0..1" -- "0..*" Videojuego : categoria
+
+@enduml
