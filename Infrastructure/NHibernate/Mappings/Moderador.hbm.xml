@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="ApplicationCore" namespace="ApplicationCore.Domain.EN">
+  <class name="Moderador" table="Moderador">
+    <id name="Id" column="Id" type="long">
+      <generator class="hilo">
+        <param name="table">NHibernateUniqueKey</param>
+        <param name="column">NextHigh</param>
+        <param name="max_lo">100</param>
+      </generator>
+    </id>
+    <property name="Correo" column="Correo" type="string" not-null="true" />
+    <property name="Contraseña" column="Contraseña" type="string" not-null="true" />
+    
+    <set name="Soportes" table="ModeradorSoporte" lazy="true">
+      <key column="ModeradorId" />
+      <many-to-many class="Soporte" column="SoporteId" />
+    </set>
+    
+    <set name="Reportes" table="ModeradorReporte" lazy="true">
+      <key column="ModeradorId" />
+      <many-to-many class="Reporte" column="ReporteId" />
+    </set>
+  </class>
+</hibernate-mapping>

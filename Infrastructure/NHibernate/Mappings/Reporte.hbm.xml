@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="ApplicationCore" namespace="ApplicationCore.Domain.EN">
+  <class name="Reporte" table="Reporte">
+    <id name="Id" column="Id" type="long">
+      <generator class="hilo">
+        <param name="table">NHibernateUniqueKey</param>
+        <param name="column">NextHigh</param>
+        <param name="max_lo">100</param>
+      </generator>
+    </id>
+    <property name="UsuarioReportado" column="UsuarioReportado" type="string" not-null="true" />
+    <property name="Motivo" column="Motivo" type="string" not-null="true" />
+    <property name="Fecha" column="Fecha" type="DateTime" not-null="true" />
+    <property name="Estado" column="Estado" type="ApplicationCore.Domain.Enums.EstadoReporte, ApplicationCore" not-null="true" />
+    
+    <many-to-one name="Usuario" class="Usuario" column="UsuarioId" />
+    
+    <set name="Moderadores" table="ModeradorReporte" inverse="true" lazy="true">
+      <key column="ReporteId" />
+      <many-to-many class="Moderador" column="ModeradorId" />
+    </set>
+  </class>
+</hibernate-mapping>

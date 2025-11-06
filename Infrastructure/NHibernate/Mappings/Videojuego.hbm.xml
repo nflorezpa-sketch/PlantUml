@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="ApplicationCore" namespace="ApplicationCore.Domain.EN">
+  <class name="Videojuego" table="Videojuego">
+    <id name="Id" column="Id" type="long">
+      <generator class="hilo">
+        <param name="table">NHibernateUniqueKey</param>
+        <param name="column">NextHigh</param>
+        <param name="max_lo">100</param>
+      </generator>
+    </id>
+    
+    <property name="Precio" column="Precio" type="float" not-null="true" />
+    
+    <many-to-one name="Categoria" class="Categoria" column="CategoriaId" />
+    
+    <set name="Usuarios" table="UsuarioVideojuego" inverse="true" lazy="true">
+      <key column="VideojuegoId" />
+      <many-to-many class="Usuario" column="UsuarioId" />
+    </set>
+    
+    <set name="Vendedores" table="VendedorVideojuego" inverse="true" lazy="true">
+      <key column="VideojuegoId" />
+      <many-to-many class="Vendedor" column="VendedorId" />
+    </set>
+    
+    <set name="Pedidos" table="PedidoVideojuego" inverse="true" lazy="true">
+      <key column="VideojuegoId" />
+      <many-to-many class="Pedido" column="PedidoId" />
+    </set>
+    
+    <set name="Desafios" table="DesafioVideojuego" inverse="true" lazy="true">
+      <key column="VideojuegoId" />
+      <many-to-many class="Desafio" column="DesafioId" />
+    </set>
+  </class>
+</hibernate-mapping>

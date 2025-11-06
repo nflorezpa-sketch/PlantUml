@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="ApplicationCore" namespace="ApplicationCore.Domain.EN">
+  <class name="Desafio" table="Desafio">
+    <id name="Id" column="Id" type="long">
+      <generator class="hilo">
+        <param name="table">NHibernateUniqueKey</param>
+        <param name="column">NextHigh</param>
+        <param name="max_lo">100</param>
+      </generator>
+    </id>
+    <property name="Nombre" column="Nombre" type="string" not-null="true" />
+    <property name="Descripcion" column="Descripcion" type="string" not-null="true" />
+    
+    <set name="Videojuegos" table="DesafioVideojuego" lazy="true">
+      <key column="DesafioId" />
+      <many-to-many class="Videojuego" column="VideojuegoId" />
+    </set>
+    
+    <set name="Insignias" table="DesafioInsignia" lazy="true">
+      <key column="DesafioId" />
+      <many-to-many class="Insignia" column="InsigniaId" />
+    </set>
+  </class>
+</hibernate-mapping>

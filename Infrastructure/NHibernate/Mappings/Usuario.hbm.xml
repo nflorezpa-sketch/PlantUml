@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="ApplicationCore" namespace="ApplicationCore.Domain.EN">
+  <class name="Usuario" table="Usuario">
+    <id name="Id" column="Id" type="long">
+      <generator class="hilo">
+        <param name="table">NHibernateUniqueKey</param>
+        <param name="column">NextHigh</param>
+        <param name="max_lo">100</param>
+      </generator>
+    </id>
+    <discriminator column="Discriminator" type="string" />
+    <property name="NombreUsuario" column="NombreUsuario" type="string" not-null="true" />
+    <property name="Correo" column="Correo" type="string" not-null="true" />
+    <property name="Telefono" column="Telefono" type="string" not-null="true" />
+    <property name="Apodo" column="Apodo" type="string" not-null="true" />
+    <property name="Contraseña" column="Contraseña" type="string" not-null="true" />
+    
+    <set name="Reportes" table="Reporte" inverse="true" lazy="true">
+      <key column="UsuarioId" />
+      <one-to-many class="Reporte" />
+    </set>
+    
+    <set name="Soportes" table="Soporte" inverse="true" lazy="true">
+      <key column="UsuarioId" />
+      <one-to-many class="Soporte" />
+    </set>
+    
+    <set name="Pedidos" table="Pedido" inverse="true" lazy="true">
+      <key column="UsuarioId" />
+      <one-to-many class="Pedido" />
+    </set>
+    
+    <set name="Transacciones" table="Transaccion" inverse="true" lazy="true">
+      <key column="UsuarioId" />
+      <one-to-many class="Transaccion" />
+    </set>
+    
+    <set name="Videojuegos" table="UsuarioVideojuego" lazy="true">
+      <key column="UsuarioId" />
+      <many-to-many class="Videojuego" column="VideojuegoId" />
+    </set>
+    
+    <set name="Insignias" table="Insignia" inverse="true" lazy="true">
+      <key column="UsuarioId" />
+      <one-to-many class="Insignia" />
+    </set>
+    
+    <subclass name="Vendedor" discriminator-value="Vendedor">
+      <set name="VideojuegosPublicados" table="VendedorVideojuego" lazy="true">
+        <key column="VendedorId" />
+        <many-to-many class="Videojuego" column="VideojuegoId" />
+      </set>
+    </subclass>
+  </class>
+</hibernate-mapping>

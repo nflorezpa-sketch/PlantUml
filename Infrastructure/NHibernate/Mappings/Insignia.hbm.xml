@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="ApplicationCore" namespace="ApplicationCore.Domain.EN">
+  <class name="Insignia" table="Insignia">
+    <id name="Id" column="Id" type="long">
+      <generator class="hilo">
+        <param name="table">NHibernateUniqueKey</param>
+        <param name="column">NextHigh</param>
+        <param name="max_lo">100</param>
+      </generator>
+    </id>
+    <property name="Perfil" column="Perfil" type="ApplicationCore.Domain.Enums.TipoInsignia, ApplicationCore" not-null="true" />
+    <property name="RutaDelImg" column="RutaDelImg" type="string" not-null="true" />
+    
+    <many-to-one name="Usuario" class="Usuario" column="UsuarioId" />
+    
+    <set name="Desafios" table="DesafioInsignia" inverse="true" lazy="true">
+      <key column="InsigniaId" />
+      <many-to-many class="Desafio" column="DesafioId" />
+    </set>
+  </class>
+</hibernate-mapping>
